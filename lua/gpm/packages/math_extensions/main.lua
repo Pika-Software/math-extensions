@@ -1,6 +1,7 @@
 local assert = assert
 local type = type
 
+local math_random = math.random
 local math_Round = math.Round
 local math_floor = math.floor
 local math_abs = math.abs
@@ -60,6 +61,45 @@ do
         self[2] = math_abs(self[2])
         self[3] = math_abs(self[3])
         return self
+    end
+
+end
+
+--[[-------------------------------------------------------------------------
+	ents.FindInBoxRotated( global pos, ang, mins, maxs )
+---------------------------------------------------------------------------]]
+
+do
+
+    local ents_FindInSphere = ents.FindInSphere
+    local WorldToLocal = WorldToLocal
+    local table_insert = table.insert
+
+    function ents.FindInBoxRotated(pos, ang, mins, maxs)
+        local result = {}
+        for num, ent in ipairs( ents_FindInSphere( pos, mins:Diameter( maxs ) ) ) do
+            if WorldToLocal( ent:GetPos(), ent:GetAngles(), pos, ang ):WithinAABox( mins, maxs ) then
+                table_insert( result, ent )
+            end
+        end
+
+        return result
+    end
+
+end
+
+--[[-------------------------------------------------------------------------
+	player.Random
+---------------------------------------------------------------------------]]
+
+do
+
+    local player_GetHumans = player.GetHumans
+    local player_GetAll = player.GetAll
+
+    function player.Random( no_bots )
+        local players = no_bots and player_GetHumans() or player_GetAll()
+        return players[math_random(1, #players)]
     end
 
 end
