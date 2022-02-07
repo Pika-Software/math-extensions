@@ -1,4 +1,5 @@
 local assert = assert
+local ipairs = ipairs
 local type = type
 
 local math_random = math.random
@@ -6,6 +7,48 @@ local math_Round = math.Round
 local math_floor = math.floor
 local math_abs = math.abs
 local math_max = math.max
+
+--[[-------------------------------------------------------------------------
+	math.sum
+---------------------------------------------------------------------------]]
+
+function math.sum( ... )
+	local sum = 0
+	for num, int in ipairs({...}) do
+		sum = sum + int
+	end
+
+	return sum
+end
+
+--[[-------------------------------------------------------------------------
+	math.striving_for
+---------------------------------------------------------------------------]]
+
+function math.striving_for(value, valueTo, delay)
+	return value + (valueTo - value) / delay
+end
+
+--[[-------------------------------------------------------------------------
+	math.average
+---------------------------------------------------------------------------]]
+
+do
+
+    local select = select
+    function math.average( ... )
+        local amount = select( "#", ... )
+        assert(amount > 1, "At least two numbers are required!")
+
+        local total = 0
+        for i = 1, amount do
+            total = total + select(i, ...)
+        end
+
+        return total / amount
+    end
+
+end
 
 --[[-------------------------------------------------------------------------
 	Angle improvements
