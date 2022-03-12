@@ -1,12 +1,5 @@
 local assert = assert
 local ipairs = ipairs
-local type = type
-
-local math_random = math.random
-local math_Round = math.Round
-local math_floor = math.floor
-local math_abs = math.abs
-local math_max = math.max
 
 --[[-------------------------------------------------------------------------
 	math.sum
@@ -54,6 +47,9 @@ end
 	Angle improvements
 ---------------------------------------------------------------------------]]
 
+local math_floor = math.floor
+local math_abs = math.abs
+
 do
 
     local ANGLE = FindMetaTable("Angle")
@@ -77,6 +73,8 @@ end
 	Vector improvements
 ---------------------------------------------------------------------------]]
 
+local math_max = math.max
+
 do
 
     local VECTOR = FindMetaTable("Vector")
@@ -88,8 +86,11 @@ do
         return self[1] >= vec1[1] and self[1] <= vec2[1] and self[2] >= vec1[2] and self[2] <= vec2[2] and self[3] >= vec1[3] and self[3] <= vec2[3]
     end
 
-    function VECTOR:Round(dec)
-        return Vector( math_Round(self[1], dec or 0), math_Round(self[2], dec or 0), math_Round(self[3], dec or 0) )
+    do
+        local math_Round = math.Round
+        function VECTOR:Round(dec)
+            return Vector( math_Round(self[1], dec or 0), math_Round(self[2], dec or 0), math_Round(self[3], dec or 0) )
+        end
     end
 
     function VECTOR:Floor()
@@ -139,6 +140,7 @@ do
 
     local player_GetHumans = player.GetHumans
     local player_GetAll = player.GetAll
+    local math_random = math.random
 
     function player.Random( no_bots )
         local players = no_bots and player_GetHumans() or player_GetAll()
