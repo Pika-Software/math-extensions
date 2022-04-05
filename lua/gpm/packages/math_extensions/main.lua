@@ -18,8 +18,25 @@ end
 	math.striving_for
 ---------------------------------------------------------------------------]]
 
-function math.striving_for(value, valueTo, delay)
+function math.striving_for( value, valueTo, delay )
 	return value + (valueTo - value) / delay
+end
+
+--[[-------------------------------------------------------------------------
+	Bezier Curve
+---------------------------------------------------------------------------]]
+
+function math.bezier_linear( vec1, vec2, t )
+    return vec1 + ( vec2 - vec1 ) * ( t / 100 )
+end
+
+do
+
+    local linear = math.bezier_linear
+    function math.bezier( vec1, vec2, vec3, t )
+        return linear( linear( vec1, vec2, t ), linear( vec2, vec3, t ), t )
+    end
+
 end
 
 --[[-------------------------------------------------------------------------
