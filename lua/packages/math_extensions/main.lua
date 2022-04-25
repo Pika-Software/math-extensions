@@ -40,7 +40,7 @@ do
 end
 
 --[[-------------------------------------------------------------------------
-	math.average
+	math.average - For number arguments
 ---------------------------------------------------------------------------]]
 
 do
@@ -58,6 +58,33 @@ do
         return total / amount
     end
 
+end
+
+--[[-------------------------------------------------------------------------
+	math.average - For lists
+---------------------------------------------------------------------------]]
+
+function math.averageList( tbl )
+    local sum = 0
+    for num, number in ipairs( tbl ) do
+        sum = sum + number
+    end
+
+    return sum / #tbl
+end
+
+--[[-------------------------------------------------------------------------
+	math.average - For tables
+---------------------------------------------------------------------------]]
+
+function math.averageTable( tbl )
+    local sum, counter = 0
+    for num, number in pairs( tbl ) do
+        counter = counter + 1
+        sum = sum + number
+    end
+
+    return sum / counter
 end
 
 --[[-------------------------------------------------------------------------
