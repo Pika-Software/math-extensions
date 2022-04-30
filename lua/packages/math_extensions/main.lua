@@ -175,20 +175,3 @@ do
     end
 
 end
-
---[[-------------------------------------------------------------------------
-	player.Random
----------------------------------------------------------------------------]]
-
-do
-
-    local player_GetHumans = player.GetHumans
-    local player_GetAll = player.GetAll
-    local math_random = math.random
-
-    function player.Random( no_bots )
-        local players = no_bots and player_GetHumans() or player_GetAll()
-        return players[math_random(1, #players)]
-    end
-
-end
