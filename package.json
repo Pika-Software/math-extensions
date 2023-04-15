@@ -1,7 +1,7 @@
 {
     "name": "math-extensions",
     "files": {
-        "lua/packages/math-extensions/package.lua": "https://raw.githubusercontent.com/Pika-Software/math-extensions/main/lua/packages/math-extensions/package.lua",
-        "lua/packages/math-extensions/init.lua": "https://raw.githubusercontent.com/Pika-Software/math-extensions/main/lua/packages/math-extensions/init.lua"
+        "lua/packages/math-extensions/package.lua": "",
+        "lua/packages/math-extensions/init.lua": ""
     }
 }
