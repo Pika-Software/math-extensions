@@ -6,22 +6,36 @@ local math = math
 local ipairs = ipairs
 local pairs = pairs
 
--- math.Aspiration( from, to, delay )
+math.Map = math.Remap
+
 function math.Aspiration( from, to, delay )
     return from + ( to - from ) / delay
 end
 
--- math.BezierLinear( from, to, delta )
 function math.BezierLinear( from, to, delta )
     return from + ( to - from ) * ( delta / 100 )
 end
 
--- math.Bezier( vec1, vec2, vec3, delta )
 function math.Bezier( vec1, vec2, vec3, delta )
     return math.BezierLinear( math.BezierLinear( vec1, vec2, delta ), math.BezierLinear( vec2, vec3, delta ), delta )
 end
 
--- table.GetMin( tbl )
+function math.SinWave( x, freq, amp, offset )
+    return math.sin( 2 * math.pi * freq * x ) * amp + offset
+end
+
+function math.Divisible( num, factor )
+    return num % factor == 0
+end
+
+function math.Even( num )
+    return math.Divisible( num, 2 )
+end
+
+function math.Odd( num )
+    return not math.Even( num )
+end
+
 function table.GetMin( tbl )
     local min = nil
     for _, value in ipairs( tbl ) do
@@ -31,7 +45,6 @@ function table.GetMin( tbl )
     return min
 end
 
--- table.GetMax( tbl )
 function table.GetMax( tbl )
     local max = nil
     for _, value in ipairs( tbl ) do
@@ -41,7 +54,6 @@ function table.GetMax( tbl )
     return max
 end
 
--- table.Summary( tbl, issequential )
 function table.Summary( tbl, issequential )
     local result, count = 0, 0
     if issequential then
@@ -59,18 +71,15 @@ function table.Summary( tbl, issequential )
     return result, count
 end
 
--- table.Average( tbl, issequential )
 function table.Average( tbl, issequential )
     local result, count = table.Summary( tbl, issequential )
     return result / count
 end
 
--- math.Summary( ... )
 function math.Summary( ... )
     return table.Summary( { ... }, true )
 end
 
--- math.Average( ... )
 function math.Average( ... )
     return table.Average( { ... }, true )
 end
@@ -153,7 +162,6 @@ do
 
 end
 
--- ents.FindInBoxRotated( pos, ang, mins, maxs )
 do
 
     local ents_FindInSphere = ents.FindInSphere
