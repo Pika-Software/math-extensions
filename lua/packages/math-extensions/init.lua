@@ -3,7 +3,9 @@ local table = table
 local math = math
 
 -- Functions
+local Vector = Vector
 local ipairs = ipairs
+local Angle = Angle
 local pairs = pairs
 
 math.Map = math.Remap
@@ -160,31 +162,54 @@ do
         end
     end
 
-    function VECTOR:IsInTriangle( vec1, vec2, vec3 )
-        local a1, a2, a3 = vec2[ 1 ] - vec1[ 1 ], vec3[ 1 ] - vec2[ 1 ], vec1[ 1 ] - vec3[ 1 ]
-        local b1, b2, b3 = vec2[ 2 ] - vec1[ 2 ], vec3[ 2 ] - vec2[ 2 ], vec1[ 2 ] - vec3[ 2 ]
+    local vector_up = Vector( 0, 0, 1 )
 
-        if ( ( self[ 1 ] - vec1[ 1 ] ) * b1 + ( vec1[ 2 ] - self[ 2 ] ) * a1 >= 0 and -a3 * b1 + b3 * a1 >= 0 ) then
-            return false
-        end
+    function VECTOR:IsIn2DShape( ... )
+        local corners = { ... }
+        for index = 1, #corners do
+            local vector = corners[ index ]
+            local diff = ( corners[ index + 1 ] or corners[ 1 ] ) - vector
 
-        if ( ( self[ 1 ] - vec2[ 1 ] ) * b2 + ( vec2[ 2 ] - self[ 2 ] ) * a2 >= 0 and -a1 * b2 + b1 * a2 >= 0 ) then
-            return false
-        end
+            local diffNormal = diff:Copy()
+            VECTOR.Normalize( diffNormal )
 
-        if ( ( self[ 1 ] - vec3[ 1 ] ) * b3 + ( vec3[ 2 ] - self[ 2 ] ) * a3 >= 0 and -a2 * b3 + b2 * a3 >= 0 ) then
-            return false
+            local center = diff / 2 + vector
+            local normal = ( self - center )
+            VECTOR.Normalize( normal )
+
+            if VECTOR.Dot( VECTOR.Cross( vector_up, diffNormal ), normal ) > 0 then
+                return false
+            end
         end
 
         return true
     end
 
-    function VECTOR:IsInQuadre( vec1, vec2, vec3, vec4 )
-        return self:IsInTriangle( vec1, vec2, vec3 ) or self:IsInTriangle( vec1, vec3, vec4 )
-    end
+    -- maybe later
+    function VECTOR:IsInFake3DShape( ... )
+        if not self:IsIn2DShape( ... ) then return false end
+        local minZ, maxZ = nil, nil
 
-    function VECTOR:IsInFakeBox( vec1, vec2, vec3, vec4, minZ, maxZ )
-        return ( self:IsInTriangle( vec1, vec2, vec3 ) or self:IsInTriangle( vec1, vec3, vec4 ) ) and self[ 3 ] >= minZ and self[ 3 ] <= maxZ
+        for _, vec in ipairs( { ... } ) do
+            local z = vec[ 3 ]
+            if minZ then
+                if minZ > z then
+                    minZ = z
+                end
+            else
+                minZ = z
+            end
+
+            if maxZ then
+                if maxZ < z then
+                    maxZ = z
+                end
+            else
+                maxZ = z
+            end
+        end
+
+        return self[ 3 ] >= minZ and self[ 3 ] <= maxZ
     end
 
 end
