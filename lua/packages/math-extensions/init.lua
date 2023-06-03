@@ -2,7 +2,7 @@
 local table = table
 local math = math
 
--- Variables
+-- Functions
 local ipairs = ipairs
 local pairs = pairs
 
@@ -158,6 +158,33 @@ do
         else
             return ( self[1] + self[2] + self[3] ) / 3
         end
+    end
+
+    function VECTOR:IsInTriangle( vec1, vec2, vec3 )
+        local a1, a2, a3 = vec2[ 1 ] - vec1[ 1 ], vec3[ 1 ] - vec2[ 1 ], vec1[ 1 ] - vec3[ 1 ]
+        local b1, b2, b3 = vec2[ 2 ] - vec1[ 2 ], vec3[ 2 ] - vec2[ 2 ], vec1[ 2 ] - vec3[ 2 ]
+
+        if ( ( self[ 1 ] - vec1[ 1 ] ) * b1 + ( vec1[ 2 ] - self[ 2 ] ) * a1 >= 0 and -a3 * b1 + b3 * a1 >= 0 ) then
+            return false
+        end
+
+        if ( ( self[ 1 ] - vec2[ 1 ] ) * b2 + ( vec2[ 2 ] - self[ 2 ] ) * a2 >= 0 and -a1 * b2 + b1 * a2 >= 0 ) then
+            return false
+        end
+
+        if ( ( self[ 1 ] - vec3[ 1 ] ) * b3 + ( vec3[ 2 ] - self[ 2 ] ) * a3 >= 0 and -a2 * b3 + b2 * a3 >= 0 ) then
+            return false
+        end
+
+        return true
+    end
+
+    function VECTOR:IsInQuadre( vec1, vec2, vec3, vec4 )
+        return self:IsInTriangle( vec1, vec2, vec3 ) or self:IsInTriangle( vec1, vec3, vec4 )
+    end
+
+    function VECTOR:IsInFakeBox( vec1, vec2, vec3, vec4, minZ, maxZ )
+        return ( self:IsInTriangle( vec1, vec2, vec3 ) or self:IsInTriangle( vec1, vec3, vec4 ) ) and self[ 3 ] >= minZ and self[ 3 ] <= maxZ
     end
 
 end
