@@ -1,2 +1,2 @@
 name = "math-extensions"
-version = 000300
+version = 000400

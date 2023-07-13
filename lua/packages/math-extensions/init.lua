@@ -38,18 +38,18 @@ function math.Odd( num )
     return not math.Even( num )
 end
 
-function table.GetMin( tbl )
+function table.GetMin( tbl, issequential )
     local min = nil
-    for _, value in ipairs( tbl ) do
+    for _, value in ( issequential and ipairs or pairs )( tbl ) do
         if min == nil or value < min then min = value end
     end
 
     return min
 end
 
-function table.GetMax( tbl )
+function table.GetMax( tbl, issequential )
     local max = nil
-    for _, value in ipairs( tbl ) do
+    for _, value in ( issequential and ipairs or pairs )( tbl ) do
         if max == nil or value > max then max = value end
     end
 
@@ -58,16 +58,9 @@ end
 
 function table.Summary( tbl, issequential )
     local result, count = 0, 0
-    if issequential then
-        for _, number in ipairs( tbl ) do
-            result = result + number
-            count = count + 1
-        end
-    else
-        for _, number in pairs( tbl ) do
-            result = result + number
-            count = count + 1
-        end
+    for _, number in ( issequential and ipairs or pairs )( tbl ) do
+        result = result + number
+        count = count + 1
     end
 
     return result, count
